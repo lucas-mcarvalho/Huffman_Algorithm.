@@ -106,5 +106,42 @@ public class huffman {
         return encoder.toString();
 
     }
+
+    // Reconstrói a árvore de Huffman a partir de códigos binários
+    public static huffman buildTreeFromCodes(Map<String, Character> codes) {
+
+        //CRIA A ARVORE VAZIA COM NO NULL
+        huffman root = new huffman();
+
+        //PERCORRENDO O MAPA E ATRIBUINDO OS VALORES NAS VARIAVEIS
+        for (Map.Entry<String, Character> entry : codes.entrySet()) {
+            String code = entry.getKey();
+            char character = entry.getValue();
+            huffman current = root;
+
+
+            //DEPOIS DE PERCORRER VERIFICA OS VALORES E INSERE EM CADA BIT
+            for (char bit : code.toCharArray()) {
+                //SE FOR ZERO E ESQUERDA ,SE NAO E DIREITA
+                if (bit == '0') {
+                    if (current.left == null)
+                        current.left = new huffman();
+                    current = current.left;
+
+                } else {
+                    if (current.right == null)
+                        current.right = new huffman();
+                    current = current.right;
+                }
+            }
+
+            //DEPOIS DE CRIAR OS NODES ATRIBUI A FOLHA O CARACTERE
+            current.character = character;
+        }
+        return root;
+    }
+
+
+
 }
 

@@ -4,10 +4,9 @@ import entities.huffman;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-public class main {
+public class Encoder {
 
     public static void main(String[] args){
     Map<Character,String> h1;
@@ -23,9 +22,11 @@ public class main {
 
         //ITERANDO SOBRE O MAP E GRAVANDO NO ARQUIVO
         for (Map.Entry<Character, String> entry : h1.entrySet()) {
-            String line = " ' "+entry.getValue()+" : " +entry.getKey()+" \n";
+            String line = ""+entry.getValue()+" : " +entry.getKey()+" \n";
             writer.write(line);
         }
+
+        writer.write("###\n");
         String encode = huff.encode("Batman",h1);
         writer.write(encode);
         writer.close();
