@@ -19,14 +19,14 @@ public class main {
     FileWriter writer = new FileWriter(path);
     //CRIANDO UM OBJETO
     huffman huff = new huffman();
-        h1 = huffman.buildHuffmanTree("Lego");
+        h1 = huffman.buildHuffmanTree("Batman");
 
         //ITERANDO SOBRE O MAP E GRAVANDO NO ARQUIVO
         for (Map.Entry<Character, String> entry : h1.entrySet()) {
             String line = " ' "+entry.getValue()+" : " +entry.getKey()+" \n";
             writer.write(line);
         }
-        String encode = huff.encode("Lego",h1);
+        String encode = huff.encode("Batman",h1);
         writer.write(encode);
         writer.close();
     }
