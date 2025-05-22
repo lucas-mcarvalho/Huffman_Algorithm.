@@ -12,6 +12,10 @@ public class huffman {
     private int frequency;
     private huffman left, right;
 
+    public huffman(){
+
+    }
+
     public huffman(char character, int frequency) {
         this.character = character;
         this.frequency = frequency;
@@ -28,7 +32,7 @@ public class huffman {
     }
 
     // Método para gerar os códigos a partir da árvore
-    public static void generateCodes(huffman root, String code, Map<Character, String> map) {
+    public static void generateCodes(huffman root, String code, Map<Character,String>map) {
         //VERIFICANDO SE EXISTE A RAIZ
         if (root == null)
             return;
@@ -43,7 +47,6 @@ public class huffman {
         generateCodes(root.right, code + "1", map);
     }
 
-
     // Método para construir a árvore de Huffman e gerar os códigos
     public static Map<Character, String> buildHuffmanTree(String text) {
         // VARIAVEL DO TIPO MAP PARA ARMAZENAR CARACTERES
@@ -56,7 +59,7 @@ public class huffman {
             frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
         }
 
-        //CRIANDO A FILA DE PRIORIDADES E USANDO EXPRESSAO LAMBDA
+        //CRIANDO A FILA DE PRIORIDADES E USANDO EXPRESSAO LAMBDA ,ELA VAI ORDENAR DE ACORDO COM A FREQUENCIA DO NODE
         PriorityQueue<huffman> fila = new PriorityQueue<>(Comparator.comparingInt(node -> node.frequency));
 
 
