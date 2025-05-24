@@ -1,5 +1,7 @@
 package progam;
 
+import entities.huffman;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ public class decoder {
     Map<String ,Character> mapaDecodificado = new HashMap<>();
     StringBuilder codificado = new StringBuilder();
     try(BufferedReader reader = new BufferedReader(new FileReader("/home/lucasmonterio/Downloads/arquivo.txt"))){
+
         String linha;
         boolean lendo_codificado = false;
 
@@ -21,12 +24,21 @@ public class decoder {
                 continue;
             }
             if(!lendo_codificado){
-                String [] partes = linha.split(":");
-                mapaDecodificado.put(partes[1],partes[0].charAt(0));
+                String[] partes = linha.split(":");
+                if (partes.length == 2) {
+                    String codigo = partes[0].trim();
+                    char caractere = partes[1].trim().charAt(0);
+                    mapaDecodificado.put(codigo, caractere);
+                }
             }else{
-                codificado.append(linha);
+                codificado.append(linha.trim());
             }
         }
+        huffman arvore = huffman.buildTreeFromCodes(mapaDecodificado);
+
+        String original = huffman.decode(codificado.toString(),arvore);
+
+        System.out.println("Texto decodificado : "+original);
 
 
     }

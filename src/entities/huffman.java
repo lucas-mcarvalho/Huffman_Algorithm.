@@ -116,7 +116,7 @@ public class huffman {
         //PERCORRENDO O MAPA E ATRIBUINDO OS VALORES NAS VARIAVEIS
         for (Map.Entry<String, Character> entry : codes.entrySet()) {
             String code = entry.getKey();
-            char character = entry.getValue();
+            char charactere = entry.getValue();
             huffman current = root;
 
 
@@ -136,12 +136,73 @@ public class huffman {
             }
 
             //DEPOIS DE CRIAR OS NODES ATRIBUI A FOLHA O CARACTERE
-            current.character = character;
+            current.character = charactere;
         }
         return root;
     }
 
 
+
+    //FUNCAO PRA DECODIFICAR A STRIN BINARIA
+    public static  String decode (String encodeText,huffman root){
+    StringBuilder builder = new StringBuilder();
+    huffman current = root;
+
+
+        /**
+         * PERCORRENDO TODA A ARVORE E DECODIFICANDO A STRING ,
+         * SE ENCONTRARMOS UM NO FOLHA ,RETORNAMOS PARA A RAIZ
+         */
+
+        for(char bit: encodeText.toCharArray()){
+            if(bit == '0'){
+                    current = current.left;
+            }else{
+                current = current.right;
+
+            }
+            if(current.left == null && current.right == null){
+                    builder.append(current.character);
+                    current = root;
+            }
+        }
+    return builder.toString();
+    }
+
+
+    //TRANSFORMA A ARVORE DE HUFFMAN E UM STRING LINEAR ,PARA PODER FAZER O PERCURSO EM PRE ORDEM
+    public static void sealizerTree(huffman no, StringBuilder sb){
+
+        if(no == null){
+            return;
+        }
+        if(no.left ==null && no.right ==null){
+            sb.append('1');
+            sb.append(no.character);
+        }else{
+            sb.append('0');
+            sealizerTree(no.left,sb);
+            sealizerTree(no.right,sb);
+        }
+    }
+
+    public static huffman desserializerTree(String s,int [] index){
+    if(index[0]>=s.length()){
+        return  null;
+    }
+    char flag = s.charAt(index[0]++);
+    if(flag == '1'){
+        char caractere = s.charAt(index[0]++);
+        huffman folha  = new huffman();
+        folha.character = caractere;
+        return  folha;
+    }else{
+        huffman node = new huffman();
+        node.left = desserializerTree(s,index);
+        node.right = desserializerTree(s,index);
+        return node;
+         }
+    }
 
 }
 
