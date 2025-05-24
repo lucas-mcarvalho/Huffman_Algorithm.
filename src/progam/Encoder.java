@@ -4,6 +4,7 @@ import entities.huffman;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Encoder {
@@ -12,24 +13,27 @@ public class Encoder {
     Map<Character,String> h1;
 
     try {
-        //CAMINHO DO ARQUIVO QUE SERA SALVO
-    String path  = "/home/lucasmonterio/Downloads/arquivo.txt";
-    //ESCRITOR DO JAVA
-    FileWriter writer = new FileWriter(path);
-    //CRIANDO UM OBJETO
-    huffman huff = new huffman();
-        h1 = huffman.buildHuffmanTree("Batman");
+        String path  = "/home/lucasmonterio/Downloads/arquivo.txt";
+        FileWriter writer = new FileWriter(path);
+        String texto = "Batman";
 
-        //ITERANDO SOBRE O MAP E GRAVANDO NO ARQUIVO
-        for (Map.Entry<Character, String> entry : h1.entrySet()) {
-            String line = ""+entry.getValue()+" : " +entry.getKey()+" \n";
-            writer.write(line);
-        }
+        huffman root = huffman.buildTree(texto);
 
-        writer.write("###\n");
-        String encode = huff.encode("Batman",h1);
-        writer.write(encode);
+        Map<Character, String> mapaCodigos = new HashMap<>();
+        huffman.generateCodes(root, "", mapaCodigos);
+
+        // Serializar árvore
+        StringBuilder sb = new StringBuilder();
+        huffman.sealizerTree(root, sb);
+        String serializedTree = sb.toString();
+
+        writer.write(serializedTree + "\n###\n");
+
+        // Codificar texto
+        String encodedText = huffman.encode(texto, mapaCodigos);
+        writer.write(encodedText);
         writer.close();
+
     }
     catch(IOException e){
         e.printStackTrace();

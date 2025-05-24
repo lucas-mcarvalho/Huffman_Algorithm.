@@ -91,6 +91,26 @@ public class huffman {
         generateCodes(root, "", huffmancode);
         return huffmancode;
     }
+    //METODO PARA RETORNAR UMA STRING DE TEXTO SEM CODIGOS
+    public static huffman buildTree(String text) {
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        for (char c : text.toCharArray()) {
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        }
+
+        PriorityQueue<huffman> fila = new PriorityQueue<>(Comparator.comparingInt(node -> node.frequency));
+        for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet()) {
+            fila.add(new huffman(entry.getKey(), entry.getValue()));
+        }
+
+        while (fila.size() > 1) {
+            huffman node1 = fila.poll();
+            huffman node2 = fila.poll();
+            huffman merged = new huffman(node1.frequency + node2.frequency, node1, node2);
+            fila.add(merged);
+        }
+        return fila.poll();
+    }
 
     // Método para codificar o texto original usando os códigos
     public static String encode(String text, Map<Character, String> huffmanCodes) {

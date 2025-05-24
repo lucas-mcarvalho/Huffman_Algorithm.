@@ -14,32 +14,17 @@ public class decoder {
     Map<String ,Character> mapaDecodificado = new HashMap<>();
     StringBuilder codificado = new StringBuilder();
     try(BufferedReader reader = new BufferedReader(new FileReader("/home/lucasmonterio/Downloads/arquivo.txt"))){
+        String serializedTree = reader.readLine(); // primeira linha
+        reader.readLine(); // pula "###"
+        String encodedText = reader.readLine(); // texto codificado
 
-        String linha;
-        boolean lendo_codificado = false;
+        // Reconstruir árvore a partir da serialização
+        int[] index = {0}; // precisa ser array para passar por referência
+        huffman root = huffman.desserializerTree(serializedTree, index);
 
-        while((linha = reader.readLine())!=null){
-            if(linha.equals("###")){
-                lendo_codificado = true;
-                continue;
-            }
-            if(!lendo_codificado){
-                String[] partes = linha.split(":");
-                if (partes.length == 2) {
-                    String codigo = partes[0].trim();
-                    char caractere = partes[1].trim().charAt(0);
-                    mapaDecodificado.put(codigo, caractere);
-                }
-            }else{
-                codificado.append(linha.trim());
-            }
-        }
-        huffman arvore = huffman.buildTreeFromCodes(mapaDecodificado);
-
-        String original = huffman.decode(codificado.toString(),arvore);
-
-        System.out.println("Texto decodificado : "+original);
-
+        // Decodificar
+        String original = huffman.decode(encodedText, root);
+        System.out.println("Texto decodificado: " + original);
 
     }
 
